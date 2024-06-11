@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    let emojies=["🥳","🥰","😘","🤩","😇"]
+    let emojies=["🥳","🥰","😘","🤩","😇","🤓","😎","🎃","🙂","🤣","🤪"]
     @State var cardCount=4
     func checkCount(offset:Int) -> Array<Bool> {
         if(offset>0 && cardCount>=emojies.count){
@@ -22,23 +22,26 @@ struct ContentView: View {
     }
     var body: some View {
         VStack{
-            HStack{
-                ForEach(0..<cardCount,id: \.self){ index in
-                    CardView(content: emojies[index])
+            ScrollView{
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]){
+                        ForEach(0..<cardCount,id: \.self){ index in
+                            CardView(content: emojies[index]).aspectRatio(1,contentMode: .fit)
+                        }
+                    }.foregroundColor(.pink)
                 }
-            }.padding().foregroundColor(.red)
+            Spacer()
             HStack{
-                Button(action: {
-                    cardCount+=1
-                }) {
-                    Image(systemName: "rectangle.stack.fill.badge.plus").font(.largeTitle)
-                }.disabled(checkCount(offset: +1)[0])
-                Spacer()
                 Button(action: {
                     cardCount-=1
                 }) {
                     Image(systemName: "rectangle.stack.fill.badge.minus").font(.largeTitle)
                 }.disabled(checkCount(offset: -1)[1])
+                Spacer()
+                Button(action: {
+                    cardCount+=1
+                }) {
+                    Image(systemName: "rectangle.stack.fill.badge.plus").font(.largeTitle)
+                }.disabled(checkCount(offset: +1)[0])
             }
         }.padding()
     }
@@ -51,14 +54,17 @@ struct CardView:View {
     var body: some View{
             ZStack{
                 let base = RoundedRectangle(cornerRadius: 12)
-                if isFaceUp{
-                    base.fill(.white)
-                    base.strokeBorder(lineWidth: 5)
-                    Text(content).font(.largeTitle)
+                if(isFaceUp){
+                    Group{
+                        base.fill(.white)
+                        base.strokeBorder(lineWidth: 5)
+                        Text(content).font(.largeTitle)
+                    }
                 }
                 else{
                     base.fill()
                 }
+          
             }.onTapGesture{
                 isFaceUp.toggle()
             }

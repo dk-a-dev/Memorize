@@ -46,17 +46,19 @@ struct ContentView: View {
                     } label: {
                         ButtonView(icon: "figure.fall.circle", title: "halloween")
                     }
+            Spacer()
             Button {
                 getThemedCards(id: 2)
                     } label: {
                         ButtonView(icon: "globe", title: "countries")
                     }
+            Spacer()
             Button {
                 getThemedCards(id: 3)
                     } label: {
                         ButtonView(icon: "car", title: "vechiles")
                     }
-        })
+        }).padding(.horizontal)
     }
 }
 
